@@ -22,7 +22,7 @@ router = APIRouter()
 async def get_students():
     try:
         students = await retrieve_students()
-        
+
         if students:
             return ResponseModel(students, "Students data retrieved successfully")
         return ResponseModel(students, "Empty list returned")
@@ -42,7 +42,7 @@ async def add_student_data(student: StudentSchema = Body(...)):
 async def get_student_data(id):
     try:
         student = await retrieve_student(id)
-        
+
         if student:
             return ResponseModel(student, "Student data rettrieved successfully")
         return ResponseModel("An error ocurred", 404, "Student does not exist")
@@ -52,9 +52,9 @@ async def get_student_data(id):
 @router.put("/{id}")
 async def update_student_data(id: str, req: UpdateStudentModel = Body(...)):
     req = {k: v for k, v in req.dict().items() if v is not None}
-    
+
     student = await retrieve_student(id)
-    
+
     try:
         if student:
             updated_student = await update_student(id, req)
@@ -62,7 +62,8 @@ async def update_student_data(id: str, req: UpdateStudentModel = Body(...)):
                 "Student with ID: {} name update is successful".format(id),
                 "Student name updated successfully",
                 )
-        return ResponseModel("An error occurred", 404, "There was an error updating the student data.",)
+        return ResponseModel(
+            "An error occurred", 404,"There was an error updating the student data.",)
 
     except Exception:
         return ErrorResponseModel(Exception, 500, "Student not updated")
@@ -73,10 +74,12 @@ async def delete_student_data(id: str):
         student = await retrieve_student(id)
         if student:
             deleted_student = await delete_student(id)
-            
+
             if deleted_student:
-                return ResponseModel("Student with ID: {} removed".format(id), "Student deleted successfully")
-            return ErrorResponseModel("An error occurred", 404, "Student with id {0} doesn't exist".format(id))
+                return ResponseModel(
+                    "Student with ID: {} removed".format(id), "Student deleted successfully")
+            return ErrorResponseModel(
+                "An error occurred", 404, "Student with id {0} doesn't exist".format(id))
         return ResponseModel("An error ocurred", 404, "Student does not exist")
     except Exception:
         return ErrorResponseModel(Exception, 500, "Student not deleted")
