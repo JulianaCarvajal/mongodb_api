@@ -4,5 +4,5 @@ app = FastAPI()
 
 @app.get("/", tags=["Root"])
 async def read_root():
-    return {"message": "Wekcome to this fantastic app!"}
+    return {"message": "Welcome to this fantastic app!"}
 
